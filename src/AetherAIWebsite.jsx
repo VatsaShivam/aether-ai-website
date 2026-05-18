@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
+  BookOpenText,
   Brain,
   Bot,
   Boxes,
@@ -35,6 +36,20 @@ import {
 export default function AetherAIWebsite() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeService, setActiveService] = useState("AI Automation");
+  const [path, setPath] = useState(() => window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigate = (href) => {
+    window.history.pushState({}, "", href);
+    setPath(href);
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const services = useMemo(
     () => [
@@ -113,7 +128,36 @@ export default function AetherAIWebsite() {
       items: ["KPI dashboards", "Sales signals", "Stock alerts", "Service trends", "Cost tracking", "ROI reports"],
     },
   ];
+  const blogPosts = [
+    {
+      title: "How AI Agents Improve Daily ERP Operations",
+      category: "ERP Automation",
+      readTime: "5 min read",
+      desc: "A practical guide to using supervised AI agents for orders, invoices, inventory checks, approvals, and support workflows.",
+    },
+    {
+      title: "What Business Leaders Should Know Before Building a RAG Assistant",
+      category: "Knowledge Systems",
+      readTime: "6 min read",
+      desc: "How to prepare documents, permissions, citations, and review flows before launching an internal knowledge assistant.",
+    },
+    {
+      title: "From Manual Reports to Real-Time Operational Intelligence",
+      category: "Business Intelligence",
+      readTime: "4 min read",
+      desc: "Ways to turn ERP, POS, CRM, and support data into dashboards, alerts, and decisions your team can use every day.",
+    },
+  ];
   const active = services.find((item) => item.title === activeService) || services[0];
+  const isHome = path === "/";
+  const navItems = [
+    ["Home", "/"],
+    ["Services", "/services"],
+    ["ERP", "/erp"],
+    ["Capabilities", "/capabilities"],
+    ["Blog", "/blog"],
+    ["Contact", "/contact"],
+  ];
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#050509] text-white selection:bg-white selection:text-black">
@@ -122,34 +166,27 @@ export default function AetherAIWebsite() {
 
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#home" className="flex items-center gap-3" aria-label="Æther AI home">
+          <button type="button" onClick={() => navigate("/")} className="flex items-center gap-3 text-left" aria-label="Æther AI home">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg shadow-indigo-500/10">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
               <span className="block text-2xl font-semibold tracking-wide">Æther AI</span>
-              <span className="-mt-1 block text-xs text-white/45">Business Intelligence Evolved</span>
+                <span className="-mt-1 block text-xs text-white/45">Business Intelligence Evolved</span>
             </div>
-          </a>
+          </button>
 
           <div className="hidden items-center gap-8 text-sm text-white/70 lg:flex">
-            {[
-              ["Services", "services"],
-              ["ERP", "erp"],
-              ["Solutions", "solutions"],
-              ["Process", "process"],
-              ["Capabilities", "tech"],
-              ["Contact", "contact"],
-            ].map(([label, href]) => (
-              <a key={label} href={`#${href}`} className="transition hover:text-white">
+            {navItems.map(([label, href]) => (
+              <button key={label} type="button" onClick={() => navigate(href)} className={`transition hover:text-white ${path === href ? "text-white" : ""}`}>
                 {label}
-              </a>
+              </button>
             ))}
           </div>
 
-          <a href="#contact" className="hidden items-center gap-2 rounded-2xl bg-white px-5 py-3 font-semibold text-black transition hover:bg-white/85 md:inline-flex">
+          <button type="button" onClick={() => navigate("/contact")} className="hidden items-center gap-2 rounded-2xl bg-white px-5 py-3 font-semibold text-black transition hover:bg-white/85 md:inline-flex">
             Book Strategy Call <ArrowRight className="h-4 w-4" />
-          </a>
+          </button>
 
           <button className="rounded-xl bg-white/10 p-2 lg:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
             {mobileOpen ? <X /> : <Menu />}
@@ -158,24 +195,17 @@ export default function AetherAIWebsite() {
 
         {mobileOpen && (
           <div className="border-t border-white/10 bg-black/80 px-6 pb-5 lg:hidden">
-            {[
-              ["Services", "services"],
-              ["ERP", "erp"],
-              ["Solutions", "solutions"],
-              ["Process", "process"],
-              ["Capabilities", "tech"],
-              ["Contact", "contact"],
-            ].map(([label, href]) => (
-              <a key={label} href={`#${href}`} className="block py-3 text-white/75" onClick={() => setMobileOpen(false)}>
+            {navItems.map(([label, href]) => (
+              <button key={label} type="button" onClick={() => navigate(href)} className="block w-full py-3 text-left text-white/75">
                 {label}
-              </a>
+              </button>
             ))}
           </div>
         )}
       </nav>
 
       <main className="relative z-10">
-        <section id="home" className="mx-auto grid max-w-7xl items-center gap-14 px-6 pb-24 pt-24 lg:grid-cols-[1.05fr_0.95fr]">
+        {isHome && <section id="home" className="mx-auto grid max-w-7xl items-center gap-14 px-6 pb-24 pt-24 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/75">
               <Zap className="h-4 w-4" /> AI Stack • ERP Modules • Business Automation
@@ -185,12 +215,12 @@ export default function AetherAIWebsite() {
               Æther AI builds practical automation, AI agents, RAG platforms, ERP extensions, and cloud integrations for teams that need measurable operational impact.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a href="#contact" className="flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-semibold text-black transition hover:bg-white/85">
+              <button type="button" onClick={() => navigate("/contact")} className="flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-semibold text-black transition hover:bg-white/85">
                 Discuss Your Project <ArrowRight className="h-5 w-5" />
-              </a>
-              <a href="#services" className="rounded-2xl border border-white/20 bg-white/5 px-7 py-4 text-center font-semibold text-white transition hover:bg-white/10">
+              </button>
+              <button type="button" onClick={() => navigate("/services")} className="rounded-2xl border border-white/20 bg-white/5 px-7 py-4 text-center font-semibold text-white transition hover:bg-white/10">
                 View Capabilities
-              </a>
+              </button>
             </div>
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-4">
               {[
@@ -239,9 +269,15 @@ export default function AetherAIWebsite() {
               </div>
             </div>
           </motion.div>
-        </section>
+        </section>}
 
-        <section id="services" className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/services") && <section id="services" className="mx-auto max-w-7xl px-6 py-24">
+          {!isHome && (
+            <div className="mb-14 max-w-3xl pt-12">
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">Services</p>
+              <h1 className="mt-4 text-5xl font-bold md:text-6xl">AI services for practical business execution.</h1>
+            </div>
+          )}
           <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Services</p>
@@ -280,9 +316,15 @@ export default function AetherAIWebsite() {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
 
-        <section id="solutions" className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/erp") && <section id="solutions" className="mx-auto max-w-7xl px-6 py-24">
+          {!isHome && (
+            <div className="mb-14 max-w-3xl pt-12 text-white">
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">ERP</p>
+              <h1 className="mt-4 text-5xl font-bold md:text-6xl">AI for ERP, retail, inventory, finance, and operations.</h1>
+            </div>
+          )}
           <div className="rounded-[2rem] bg-white p-8 text-black md:p-14">
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <div>
@@ -302,9 +344,9 @@ export default function AetherAIWebsite() {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
 
-        <section id="erp" className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/erp") && <section id="erp" className="mx-auto max-w-7xl px-6 py-24">
           <div className="mb-12 grid items-end gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">ERP Modules</p>
@@ -329,9 +371,9 @@ export default function AetherAIWebsite() {
               </div>
             ))}
           </div>
-        </section>
+        </section>}
 
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/erp") && <section className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-5 md:grid-cols-4">
             {businessOutcomes.map(([value, title, desc]) => (
               <div key={title} className="rounded-3xl border border-white/12 bg-white p-6 text-black">
@@ -341,9 +383,15 @@ export default function AetherAIWebsite() {
               </div>
             ))}
           </div>
-        </section>
+        </section>}
 
-        <section id="process" className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/capabilities") && <section id="process" className="mx-auto max-w-7xl px-6 py-24">
+          {!isHome && (
+            <div className="mb-14 max-w-3xl pt-12">
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">Capabilities</p>
+              <h1 className="mt-4 text-5xl font-bold md:text-6xl">Complete AI capability, designed around your users.</h1>
+            </div>
+          )}
           <div className="mb-12 max-w-2xl">
             <p className="text-sm uppercase tracking-[0.3em] text-white/45">Process</p>
             <h2 className="mt-4 text-4xl font-bold md:text-5xl">From idea to production.</h2>
@@ -362,9 +410,9 @@ export default function AetherAIWebsite() {
               </div>
             ))}
           </div>
-        </section>
+        </section>}
 
-        <section id="tech" className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/capabilities") && <section id="tech" className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Capabilities</p>
@@ -400,9 +448,9 @@ export default function AetherAIWebsite() {
               ))}
             </div>
           </div>
-        </section>
+        </section>}
 
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        {(isHome || path === "/capabilities") && <section className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-5 md:grid-cols-3">
             {[
               [<ShieldCheck className="h-7 w-7" />, "Secure by design", "Role-based access, auditability, validation, and protected data flows."],
@@ -416,9 +464,9 @@ export default function AetherAIWebsite() {
               </div>
             ))}
           </div>
-        </section>
+        </section>}
 
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        {isHome && <section className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid items-center gap-10 rounded-[2rem] border border-white/12 bg-white/10 p-8 md:p-14 lg:grid-cols-2">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Client Result</p>
@@ -437,9 +485,57 @@ export default function AetherAIWebsite() {
               ))}
             </div>
           </div>
-        </section>
+        </section>}
 
-        <section id="contact" className="mx-auto max-w-7xl px-6 py-28">
+        {path === "/blog" && (
+          <section className="mx-auto max-w-7xl px-6 py-24">
+            <div className="mb-14 grid items-end gap-8 pt-12 lg:grid-cols-[0.9fr_1.1fr]">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-white/45">Blog</p>
+                <h1 className="mt-4 text-5xl font-bold md:text-6xl">Ideas for business leaders building with AI.</h1>
+              </div>
+              <p className="leading-relaxed text-white/55">
+                Practical articles on AI automation, ERP workflows, knowledge assistants, governance, and measurable business outcomes.
+              </p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {blogPosts.map((post) => (
+                <article key={post.title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-7">
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10">
+                    <BookOpenText className="h-7 w-7" />
+                  </div>
+                  <p className="text-sm uppercase tracking-[0.2em] text-white/40">{post.category}</p>
+                  <h2 className="mt-4 text-2xl font-semibold">{post.title}</h2>
+                  <p className="mt-3 leading-relaxed text-white/55">{post.desc}</p>
+                  <div className="mt-6 flex items-center justify-between text-sm text-white/45">
+                    <span>{post.readTime}</span>
+                    <span>Coming soon</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="mt-12 rounded-[2rem] bg-white p-8 text-black md:p-12">
+              <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-black/45">Publish With Us</p>
+                  <h2 className="mt-4 text-3xl font-bold md:text-4xl">Need a blog section for case studies, insights, and updates?</h2>
+                  <p className="mt-4 text-black/60">The blog page is ready for posts, categories, and future article detail pages.</p>
+                </div>
+                <button type="button" onClick={() => navigate("/contact")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-black px-7 py-4 font-semibold text-white">
+                  Plan Content <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {(isHome || path === "/contact") && <section id="contact" className="mx-auto max-w-7xl px-6 py-28">
+          {!isHome && (
+            <div className="mb-14 max-w-3xl pt-12">
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">Contact</p>
+              <h1 className="mt-4 text-5xl font-bold md:text-6xl">Let’s map your highest-value AI workflow.</h1>
+            </div>
+          )}
           <div className="grid gap-10 rounded-[2rem] bg-white p-8 text-black md:p-14 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-black/45">Contact</p>
@@ -474,7 +570,7 @@ export default function AetherAIWebsite() {
               </button>
             </form>
           </div>
-        </section>
+        </section>}
       </main>
 
       <footer className="relative z-10 border-t border-white/10 py-8 text-center text-white/45">© 2026 Æther AI. Beyond Intelligence. Beyond Limits.</footer>
