@@ -81,3 +81,24 @@ BACKEND_API_URL=https://your-api-domain.com
 ```
 
 Optional: bind a Cloudflare KV namespace named `INQUIRIES_KV` to save inquiries on Cloudflare when no Python backend is configured.
+
+To run fully on Cloudflare without the Python container, create two Workers KV namespaces in Cloudflare:
+
+```bash
+INQUIRIES_KV
+BLOGS_KV
+```
+
+Bind them to the Pages project in:
+
+```bash
+Workers & Pages > your Pages project > Settings > Functions > KV namespace bindings
+```
+
+Then Cloudflare Pages Functions will:
+
+- save contact form submissions to `INQUIRIES_KV`
+- read blog posts from `BLOGS_KV`
+- fall back to bundled blog posts if `BLOGS_KV` is empty
+
+MongoDB itself cannot be hosted inside Cloudflare Pages. To use MongoDB, host MongoDB in MongoDB Atlas or another Mongo host, deploy the Python backend, and set `BACKEND_API_URL`.

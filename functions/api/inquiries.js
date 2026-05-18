@@ -6,6 +6,17 @@ export const onRequest = async ({ request, env }) => {
   }
 
   if (request.method === "GET") {
+    if (env.INQUIRIES_KV) {
+      const list = await env.INQUIRIES_KV.list({ prefix: "inquiry:" });
+      const inquiries = await Promise.all(
+        list.keys.map(async (key) => {
+          const value = await env.INQUIRIES_KV.get(key.name);
+          return value ? JSON.parse(value) : null;
+        })
+      );
+      return json(inquiries.filter(Boolean).reverse());
+    }
+
     return json({
       status: "ok",
       message: "Use POST /api/inquiries to submit website inquiries.",

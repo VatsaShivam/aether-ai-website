@@ -9,6 +9,13 @@ export const onRequestGet = async ({ request, env, params }) => {
     return proxied;
   }
 
+  if (env.BLOGS_KV) {
+    const value = await env.BLOGS_KV.get(`blog:${params.slug}`);
+    if (value) {
+      return json(JSON.parse(value));
+    }
+  }
+
   const post = blogPosts.find((item) => item.slug === params.slug);
   return post ? json(post) : json({ detail: "Blog post not found" }, 404);
 };
