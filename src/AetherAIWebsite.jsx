@@ -130,26 +130,72 @@ export default function AetherAIWebsite() {
   ];
   const blogPosts = [
     {
+      slug: "ai-agents-erp-operations",
       title: "How AI Agents Improve Daily ERP Operations",
       category: "ERP Automation",
       readTime: "5 min read",
       desc: "A practical guide to using supervised AI agents for orders, invoices, inventory checks, approvals, and support workflows.",
+      sections: [
+        {
+          heading: "Start with the work people repeat every day",
+          body: "The best ERP automation opportunities are usually hiding in plain sight: checking order status, matching invoices, following up on approvals, creating support notes, updating records, and preparing daily reports. AI agents help when those tasks require context, judgment, and system access rather than simple one-step automation.",
+        },
+        {
+          heading: "Keep people in control",
+          body: "For business use, agents should not behave like unmanaged bots. They should draft, recommend, validate, and execute only inside clear rules. High-risk actions such as vendor payments, credit notes, stock adjustments, or customer commitments should include approval flows, audit logs, and role-based permissions.",
+        },
+        {
+          heading: "Connect agents to measurable outcomes",
+          body: "A useful ERP agent reduces manual effort, improves response time, increases data accuracy, or gives managers better visibility. Start with one workflow, define the target metric, then expand once teams trust the result.",
+        },
+      ],
     },
     {
+      slug: "rag-assistant-business-readiness",
       title: "What Business Leaders Should Know Before Building a RAG Assistant",
       category: "Knowledge Systems",
       readTime: "6 min read",
       desc: "How to prepare documents, permissions, citations, and review flows before launching an internal knowledge assistant.",
+      sections: [
+        {
+          heading: "A knowledge assistant is only as strong as its source material",
+          body: "Before building, organize the documents your team actually relies on: policies, SOPs, product sheets, support history, contracts, manuals, and training notes. Remove outdated files, identify owners, and decide which teams can access which information.",
+        },
+        {
+          heading: "Citations build confidence",
+          body: "Business users need to know where an answer came from. A strong RAG assistant should show sources, respect permissions, and make it easy to open the original document. This is especially important for finance, HR, compliance, support, and ERP process guidance.",
+        },
+        {
+          heading: "Plan for review and improvement",
+          body: "The first release should include feedback capture, answer review, and a process for updating content. Treat the assistant as an operational system, not a one-time chatbot.",
+        },
+      ],
     },
     {
+      slug: "real-time-operational-intelligence",
       title: "From Manual Reports to Real-Time Operational Intelligence",
       category: "Business Intelligence",
       readTime: "4 min read",
       desc: "Ways to turn ERP, POS, CRM, and support data into dashboards, alerts, and decisions your team can use every day.",
+      sections: [
+        {
+          heading: "Move from reports to signals",
+          body: "Traditional reporting often tells leaders what happened too late. Operational intelligence turns business data into timely signals: stock risk, delayed purchase orders, unusual sales drops, high support volume, late invoices, or slow approvals.",
+        },
+        {
+          heading: "Bring systems into one view",
+          body: "Most teams work across ERP, POS, CRM, e-commerce, spreadsheets, and support tools. A useful dashboard brings the right data together and explains what needs attention, not just what changed.",
+        },
+        {
+          heading: "Make insights actionable",
+          body: "The strongest systems let users move from insight to action: send a reminder, open an ERP record, assign a task, escalate a ticket, or ask an assistant for the next best step.",
+        },
+      ],
     },
   ];
   const active = services.find((item) => item.title === activeService) || services[0];
   const isHome = path === "/";
+  const activePost = blogPosts.find((post) => path === `/blog/${post.slug}`);
   const navItems = [
     ["Home", "/"],
     ["Services", "/services"],
@@ -210,7 +256,7 @@ export default function AetherAIWebsite() {
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/75">
               <Zap className="h-4 w-4" /> AI Stack • ERP Modules • Business Automation
             </div>
-            <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">AI systems that make business operations faster, clearer, and easier to scale.</h1>
+            <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-7xl">AI systems that make business operations faster, clearer, and easier to scale.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/65 md:text-xl">
               Æther AI builds practical automation, AI agents, RAG platforms, ERP extensions, and cloud integrations for teams that need measurable operational impact.
             </p>
@@ -222,7 +268,7 @@ export default function AetherAIWebsite() {
                 View Capabilities
               </button>
             </div>
-            <div className="mt-10 grid max-w-xl grid-cols-3 gap-4">
+            <div className="mt-10 grid max-w-xl gap-4 sm:grid-cols-3">
               {[
                 ["ERP", "Native workflows"],
                 ["AI", "Full-stack delivery"],
@@ -275,7 +321,7 @@ export default function AetherAIWebsite() {
           {!isHome && (
             <div className="mb-14 max-w-3xl pt-12">
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Services</p>
-              <h1 className="mt-4 text-5xl font-bold md:text-6xl">AI services for practical business execution.</h1>
+              <h1 className="mt-4 text-4xl font-bold sm:text-5xl md:text-6xl">AI services for practical business execution.</h1>
             </div>
           )}
           <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
@@ -322,7 +368,7 @@ export default function AetherAIWebsite() {
           {!isHome && (
             <div className="mb-14 max-w-3xl pt-12 text-white">
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">ERP</p>
-              <h1 className="mt-4 text-5xl font-bold md:text-6xl">AI for ERP, retail, inventory, finance, and operations.</h1>
+              <h1 className="mt-4 text-4xl font-bold sm:text-5xl md:text-6xl">AI for ERP, retail, inventory, finance, and operations.</h1>
             </div>
           )}
           <div className="rounded-[2rem] bg-white p-8 text-black md:p-14">
@@ -374,7 +420,7 @@ export default function AetherAIWebsite() {
         </section>}
 
         {(isHome || path === "/erp") && <section className="mx-auto max-w-7xl px-6 py-24">
-          <div className="grid gap-5 md:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {businessOutcomes.map(([value, title, desc]) => (
               <div key={title} className="rounded-3xl border border-white/12 bg-white p-6 text-black">
                 <p className="text-3xl font-bold">{value}</p>
@@ -389,14 +435,14 @@ export default function AetherAIWebsite() {
           {!isHome && (
             <div className="mb-14 max-w-3xl pt-12">
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Capabilities</p>
-              <h1 className="mt-4 text-5xl font-bold md:text-6xl">Complete AI capability, designed around your users.</h1>
+              <h1 className="mt-4 text-4xl font-bold sm:text-5xl md:text-6xl">Complete AI capability, designed around your users.</h1>
             </div>
           )}
           <div className="mb-12 max-w-2xl">
             <p className="text-sm uppercase tracking-[0.3em] text-white/45">Process</p>
             <h2 className="mt-4 text-4xl font-bold md:text-5xl">From idea to production.</h2>
           </div>
-          <div className="grid gap-5 md:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["01", "Discover", "Map goals, bottlenecks, ERP modules, data ownership, and business impact."],
               ["02", "Design", "Create workflows, architecture, prompts, permissions, and approval rules."],
@@ -492,7 +538,7 @@ export default function AetherAIWebsite() {
             <div className="mb-14 grid items-end gap-8 pt-12 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-white/45">Blog</p>
-                <h1 className="mt-4 text-5xl font-bold md:text-6xl">Ideas for business leaders building with AI.</h1>
+                <h1 className="mt-4 text-4xl font-bold sm:text-5xl md:text-6xl">Ideas for business leaders building with AI.</h1>
               </div>
               <p className="leading-relaxed text-white/55">
                 Practical articles on AI automation, ERP workflows, knowledge assistants, governance, and measurable business outcomes.
@@ -509,7 +555,9 @@ export default function AetherAIWebsite() {
                   <p className="mt-3 leading-relaxed text-white/55">{post.desc}</p>
                   <div className="mt-6 flex items-center justify-between text-sm text-white/45">
                     <span>{post.readTime}</span>
-                    <span>Coming soon</span>
+                    <button type="button" onClick={() => navigate(`/blog/${post.slug}`)} className="inline-flex items-center gap-2 font-semibold text-white">
+                      Read article <ArrowRight className="h-4 w-4" />
+                    </button>
                   </div>
                 </article>
               ))}
@@ -529,11 +577,43 @@ export default function AetherAIWebsite() {
           </section>
         )}
 
+        {activePost && (
+          <article className="mx-auto max-w-4xl px-6 py-24">
+            <button type="button" onClick={() => navigate("/blog")} className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-white/65 hover:text-white">
+              <ChevronRight className="h-4 w-4 rotate-180" /> Back to blog
+            </button>
+            <div className="rounded-[2rem] border border-white/12 bg-white/[0.08] p-7 sm:p-10 md:p-12">
+              <p className="text-sm uppercase tracking-[0.25em] text-white/40">{activePost.category}</p>
+              <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">{activePost.title}</h1>
+              <p className="mt-5 text-lg leading-relaxed text-white/60">{activePost.desc}</p>
+              <div className="mt-8 flex flex-wrap gap-3 text-sm text-white/45">
+                <span className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2">{activePost.readTime}</span>
+                <span className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2">Æther AI Insights</span>
+              </div>
+              <div className="mt-12 space-y-10">
+                {activePost.sections.map((section) => (
+                  <section key={section.heading}>
+                    <h2 className="text-2xl font-semibold">{section.heading}</h2>
+                    <p className="mt-4 text-lg leading-8 text-white/65">{section.body}</p>
+                  </section>
+                ))}
+              </div>
+              <div className="mt-12 rounded-3xl bg-white p-6 text-black sm:p-8">
+                <h2 className="text-2xl font-bold">Want this applied to your business?</h2>
+                <p className="mt-3 leading-relaxed text-black/60">We can turn the ideas in this article into a practical roadmap for your ERP, operations, service, or knowledge workflows.</p>
+                <button type="button" onClick={() => navigate("/contact")} className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-black px-6 py-3 font-semibold text-white">
+                  Discuss Workflow <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </article>
+        )}
+
         {(isHome || path === "/contact") && <section id="contact" className="mx-auto max-w-7xl px-6 py-28">
           {!isHome && (
             <div className="mb-14 max-w-3xl pt-12">
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Contact</p>
-              <h1 className="mt-4 text-5xl font-bold md:text-6xl">Let’s map your highest-value AI workflow.</h1>
+              <h1 className="mt-4 text-4xl font-bold sm:text-5xl md:text-6xl">Let’s map your highest-value AI workflow.</h1>
             </div>
           )}
           <div className="grid gap-10 rounded-[2rem] bg-white p-8 text-black md:p-14 lg:grid-cols-[0.9fr_1.1fr]">
