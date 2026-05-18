@@ -71,3 +71,13 @@ Cloudflare Pages deploys only the frontend. The Python API and MongoDB need to r
 ```bash
 VITE_API_BASE_URL=https://your-api-domain.com/api
 ```
+
+The repo also includes Cloudflare Pages Functions under `functions/api`.
+On Cloudflare, `/api/blogs` returns blog content and `/api/inquiries` accepts form submissions.
+For real MongoDB storage in production, deploy the Python backend and add this Cloudflare Pages environment variable:
+
+```bash
+BACKEND_API_URL=https://your-api-domain.com
+```
+
+Optional: bind a Cloudflare KV namespace named `INQUIRIES_KV` to save inquiries on Cloudflare when no Python backend is configured.
