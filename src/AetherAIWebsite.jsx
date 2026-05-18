@@ -37,6 +37,15 @@ export default function AetherAIWebsite() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeService, setActiveService] = useState("AI Automation");
   const [path, setPath] = useState(() => window.location.pathname);
+  const [apiBlogPosts, setApiBlogPosts] = useState([]);
+  const [blogStatus, setBlogStatus] = useState("loading");
+  const [submitStatus, setSubmitStatus] = useState("idle");
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    message: "",
+  });
 
   useEffect(() => {
     const handlePopState = () => setPath(window.location.pathname);
@@ -50,6 +59,7 @@ export default function AetherAIWebsite() {
     setMobileOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const apiBase = import.meta.env.VITE_API_BASE_URL || "/api";
 
   const services = useMemo(
     () => [
@@ -132,7 +142,7 @@ export default function AetherAIWebsite() {
       items: ["KPI dashboards", "Sales signals", "Stock alerts", "Service trends", "Cost tracking", "ROI reports"],
     },
   ];
-  const blogPosts = [
+  const fallbackBlogPosts = [
     {
       slug: "ai-agents-erp-operations",
       title: "How AI Agents Improve Daily ERP Operations",
@@ -197,6 +207,31 @@ export default function AetherAIWebsite() {
       ],
     },
   ];
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${apiBase}/blogs`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load blog posts");
+        }
+        return response.json();
+      })
+      .then((posts) => {
+        if (!mounted) return;
+        setApiBlogPosts(posts);
+        setBlogStatus("ready");
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setApiBlogPosts(fallbackBlogPosts);
+        setBlogStatus("fallback");
+      });
+    return () => {
+      mounted = false;
+    };
+  }, [apiBase]);
+
+  const blogPosts = apiBlogPosts.length ? apiBlogPosts : fallbackBlogPosts;
   const active = services.find((item) => item.title === activeService) || services[0];
   const isHome = path === "/";
   const activePost = blogPosts.find((post) => path === `/blog/${post.slug}`);
@@ -213,6 +248,27 @@ export default function AetherAIWebsite() {
     ["Blog", "/blog"],
     ["Contact", "/contact"],
   ];
+  const handleFormChange = (field, value) => {
+    setContactForm((current) => ({ ...current, [field]: value }));
+  };
+  const submitInquiry = async (event) => {
+    event.preventDefault();
+    setSubmitStatus("sending");
+    try {
+      const response = await fetch(`${apiBase}/inquiries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+      if (!response.ok) {
+        throw new Error("Inquiry failed");
+      }
+      setSubmitStatus("sent");
+      setContactForm({ name: "", email: "", projectType: "", message: "" });
+    } catch {
+      setSubmitStatus("error");
+    }
+  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#050509] text-white selection:bg-white selection:text-black">
@@ -553,6 +609,11 @@ export default function AetherAIWebsite() {
                 Practical articles on AI automation, ERP workflows, knowledge assistants, governance, and measurable business outcomes.
               </p>
             </div>
+            {blogStatus === "fallback" && (
+              <div className="mb-8 rounded-2xl border border-amber-300/20 bg-amber-300/10 p-4 text-sm text-amber-100">
+                Showing built-in articles. Connect the Python API and MongoDB service to render live database content.
+              </div>
+            )}
             <div className="grid gap-5 md:grid-cols-3">
               {blogPosts.map((post) => (
                 <article key={post.title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-7">
@@ -651,11 +712,32 @@ export default function AetherAIWebsite() {
               </div>
             </div>
 
-            <form className="space-y-4 rounded-3xl border border-black/10 bg-black/[0.04] p-6">
-              <input className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none" placeholder="Your name" aria-label="Your name" />
-              <input className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none" placeholder="Business email" aria-label="Business email" />
-              <select className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none" aria-label="Project type">
-                <option>What do you want to build?</option>
+            <form className="space-y-4 rounded-3xl border border-black/10 bg-black/[0.04] p-6" onSubmit={submitInquiry}>
+              <input
+                className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none"
+                placeholder="Your name"
+                aria-label="Your name"
+                value={contactForm.name}
+                onChange={(event) => handleFormChange("name", event.target.value)}
+                required
+              />
+              <input
+                className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none"
+                placeholder="Business email"
+                aria-label="Business email"
+                type="email"
+                value={contactForm.email}
+                onChange={(event) => handleFormChange("email", event.target.value)}
+                required
+              />
+              <select
+                className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none"
+                aria-label="Project type"
+                value={contactForm.projectType}
+                onChange={(event) => handleFormChange("projectType", event.target.value)}
+                required
+              >
+                <option value="">What do you want to build?</option>
                 <option>AI Automation</option>
                 <option>AI Agent</option>
                 <option>RAG Knowledge Assistant</option>
@@ -666,9 +748,18 @@ export default function AetherAIWebsite() {
                 <option>POS, Inventory, Finance, or Retail Workflow</option>
                 <option>Enterprise Integration</option>
               </select>
-              <textarea className="min-h-32 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none" placeholder="Tell us about your project" aria-label="Project details" />
-              <button type="button" className="flex w-full items-center justify-center gap-2 rounded-2xl bg-black px-7 py-4 font-semibold text-white transition hover:bg-black/85">
-                Send Inquiry <ArrowRight className="h-5 w-5" />
+              <textarea
+                className="min-h-32 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none"
+                placeholder="Tell us about your project"
+                aria-label="Project details"
+                value={contactForm.message}
+                onChange={(event) => handleFormChange("message", event.target.value)}
+                required
+              />
+              {submitStatus === "sent" && <p className="rounded-2xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">Inquiry saved. We will review it and respond soon.</p>}
+              {submitStatus === "error" && <p className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-semibold text-red-800">Could not submit right now. Please check the Python API connection.</p>}
+              <button type="submit" disabled={submitStatus === "sending"} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-black px-7 py-4 font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:bg-black/50">
+                {submitStatus === "sending" ? "Sending..." : "Send Inquiry"} <ArrowRight className="h-5 w-5" />
               </button>
             </form>
           </div>
