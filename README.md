@@ -35,3 +35,10 @@ Build output directory:
 ```bash
 dist
 ```
+
+Do not set the Cloudflare Pages deploy command to `npx wrangler deploy`.
+For Pages, leave the deploy command empty in the Cloudflare dashboard, or use:
+
+```bash
+npx wrangler pages deploy dist --project-name aether-ai-website
+```
