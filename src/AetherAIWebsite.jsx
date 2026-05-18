@@ -2,22 +2,32 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  BarChart3,
   Brain,
   Bot,
+  Boxes,
   Building2,
   CheckCircle2,
   ChevronRight,
   Cloud,
+  Cpu,
   Database,
+  FileText,
   Gauge,
   Globe2,
   Layers3,
   Lock,
   Menu,
   MessageSquareText,
+  Network,
+  PackageCheck,
   Rocket,
+  Settings2,
   ShieldCheck,
+  ShoppingCart,
   Sparkles,
+  UsersRound,
+  Warehouse,
   X,
   Zap,
 } from "lucide-react";
@@ -31,60 +41,76 @@ export default function AetherAIWebsite() {
       {
         icon: <Bot className="h-6 w-6" />,
         title: "AI Automation",
-        desc: "Automate repetitive business processes with intelligent workflows, approvals, notifications, and data sync.",
-        points: ["Workflow bots", "Smart document processing", "ERP & CRM automation"],
+        desc: "Automate approvals, reconciliations, notifications, document processing, reporting, and cross-system data movement.",
+        points: ["Workflow bots", "Smart document processing", "ERP, CRM & POS automation"],
       },
       {
         icon: <Brain className="h-6 w-6" />,
         title: "AI Agents",
-        desc: "Build role-based AI agents that research, reason, execute tasks, and collaborate with your team.",
-        points: ["Sales agents", "Support agents", "Operations agents"],
+        desc: "Build supervised role-based agents that research, reason, use business tools, and hand off work with audit trails.",
+        points: ["Sales & service agents", "Finance copilots", "Operations agents"],
       },
       {
         icon: <Database className="h-6 w-6" />,
         title: "RAG Platforms",
-        desc: "Secure knowledge assistants trained on company documents, policies, tickets, and product data.",
+        desc: "Create secure knowledge assistants over policies, SOPs, tickets, product data, ERP records, and internal documents.",
         points: ["Vector search", "Cited answers", "Permission-aware retrieval"],
       },
       {
         icon: <Cloud className="h-6 w-6" />,
-        title: "Cloud Systems",
-        desc: "Production-ready APIs, dashboards, integrations, and cloud-native architecture for scale.",
-        points: ["FastAPI backends", "Cloud deployment", "Monitoring & security"],
+        title: "Cloud & ERP Systems",
+        desc: "Build production APIs, dashboards, integrations, ERP extensions, and cloud architecture for daily business operations.",
+        points: ["FastAPI backends", "ERP extensions", "Monitoring & security"],
       },
     ],
     []
   );
 
-  const industries = ["Retail", "E-commerce", "ERP", "Finance", "Healthcare", "SaaS"];
+  const industries = ["Retail", "E-commerce", "ERP", "Finance", "Healthcare", "SaaS", "Distribution", "Manufacturing"];
+  const businessOutcomes = [
+    ["30-60%", "Less manual effort", "Automate data entry, approvals, reporting, and repetitive checks."],
+    ["2-5x", "Faster decisions", "Surface operational signals from ERP, POS, CRM, and support data."],
+    ["24/7", "Customer response", "Deploy agents that answer, triage, escalate, and update business systems."],
+    ["100%", "Audit-ready flows", "Keep logs, roles, permissions, citations, and approval history visible."],
+  ];
+  const erpModules = [
+    { icon: <ShoppingCart className="h-5 w-5" />, title: "Sales & CRM", items: ["Leads", "Quotes", "Orders", "Customer 360"] },
+    { icon: <PackageCheck className="h-5 w-5" />, title: "Purchase", items: ["Vendors", "PO approvals", "GRN", "Landed cost"] },
+    { icon: <Warehouse className="h-5 w-5" />, title: "Inventory", items: ["Stock sync", "Transfers", "Replenishment", "Cycle counts"] },
+    { icon: <BarChart3 className="h-5 w-5" />, title: "Finance", items: ["Invoices", "Payments", "Reconciliation", "Cash flow"] },
+    { icon: <Boxes className="h-5 w-5" />, title: "Retail & POS", items: ["Stores", "POS", "Promotions", "Loyalty"] },
+    { icon: <Settings2 className="h-5 w-5" />, title: "Operations", items: ["Approvals", "SOPs", "Tasks", "Exceptions"] },
+    { icon: <UsersRound className="h-5 w-5" />, title: "HR & Admin", items: ["Onboarding", "Policies", "Requests", "Helpdesk"] },
+    { icon: <FileText className="h-5 w-5" />, title: "Documents", items: ["OCR", "Contracts", "KYC", "Compliance"] },
+  ];
   const techCategories = [
     {
-      title: "AI & LLMs",
-      items: ["OpenAI", "Azure OpenAI", "Gemini", "Claude", "Mistral", "Llama", "Hugging Face", "Prompt Engineering", "Fine-tuning", "Function Calling"],
+      title: "LLMs & Model Providers",
+      items: ["OpenAI", "Azure OpenAI", "Gemini", "Claude", "Mistral", "Llama", "Hugging Face", "Ollama", "Groq", "Together AI", "Model routing", "Fine-tuning"],
     },
     {
       title: "Agents & RAG",
-      items: ["LangChain", "LlamaIndex", "CrewAI", "AutoGen", "RAG Pipelines", "AI Agents", "Tool Calling", "Guardrails", "Evaluation", "Embeddings"],
+      items: ["LangChain", "LlamaIndex", "CrewAI", "AutoGen", "RAG pipelines", "Tool calling", "Memory", "Guardrails", "Evaluation", "Embeddings", "Citations", "Human approval"],
     },
     {
       title: "Vector & Data",
-      items: ["Qdrant", "Milvus", "Pinecone", "PostgreSQL", "MongoDB", "Redis", "SQL Server", "Data Lakes", "ETL Pipelines", "Analytics"],
+      items: ["Qdrant", "Milvus", "Pinecone", "Weaviate", "Chroma", "PostgreSQL", "MongoDB", "Redis", "SQL Server", "Data lakes", "ETL pipelines", "Analytics"],
     },
     {
-      title: "ERP & Retail",
-      items: ["Dynamics 365 Business Central", "LS Central", "LS Retail", "Microsoft NAV", "AL", "C/AL", "OData", "SOAP", "POS", "Replenishment"],
+      title: "ERP & Retail Systems",
+      items: ["Dynamics 365 Business Central", "LS Central", "LS Retail", "Microsoft NAV", "AL", "C/AL", "OData", "SOAP", "POS", "Replenishment", "Finance", "Inventory"],
     },
     {
       title: "Integrations",
-      items: ["Shopify", "GraphQL", "REST APIs", "Webhooks", "Microsoft Graph", "Power Automate", "Power Apps", "Bloomreach", "Payment APIs", "CRM Integrations"],
+      items: ["Shopify", "WooCommerce", "GraphQL", "REST APIs", "Webhooks", "Microsoft Graph", "Power Automate", "Power Apps", "Bloomreach", "Payment APIs", "CRM integrations", "WhatsApp"],
     },
     {
       title: "Engineering & Cloud",
-      items: ["React", "TypeScript", "Tailwind CSS", "FastAPI", "Node.js", "Docker", "Kubernetes", "Azure", "AWS", "Nginx"],
+      items: ["React", "TypeScript", "Tailwind CSS", "FastAPI", "Node.js", "Python", "Docker", "Kubernetes", "Azure", "AWS", "Cloudflare", "Nginx"],
     },
     {
       title: "DevOps & Security",
-      items: ["Git", "Azure DevOps", "CI/CD", "OAuth2", "JWT", "RBAC", "Secrets Vault", "Monitoring", "Logging", "Rate Limiting"],
+      items: ["Git", "Azure DevOps", "GitHub Actions", "CI/CD", "OAuth2", "JWT", "RBAC", "Secrets vault", "Monitoring", "Logging", "Rate limiting", "Audit trails"],
     },
   ];
   const active = services.find((item) => item.title === activeService) || services[0];
@@ -107,7 +133,7 @@ export default function AetherAIWebsite() {
           </a>
 
           <div className="hidden items-center gap-8 text-sm text-white/70 lg:flex">
-            {["Services", "Solutions", "Process", "Tech", "Contact"].map((item) => (
+            {["Services", "ERP", "Solutions", "Process", "Tech", "Contact"].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="transition hover:text-white">
                 {item}
               </a>
@@ -125,7 +151,7 @@ export default function AetherAIWebsite() {
 
         {mobileOpen && (
           <div className="border-t border-white/10 bg-black/80 px-6 pb-5 lg:hidden">
-            {["Services", "Solutions", "Process", "Tech", "Contact"].map((item) => (
+            {["Services", "ERP", "Solutions", "Process", "Tech", "Contact"].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="block py-3 text-white/75" onClick={() => setMobileOpen(false)}>
                 {item}
               </a>
@@ -138,11 +164,11 @@ export default function AetherAIWebsite() {
         <section id="home" className="mx-auto grid max-w-7xl items-center gap-14 px-6 pb-24 pt-24 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/75">
-              <Zap className="h-4 w-4" /> AI Automation • Agents • Enterprise Systems
+              <Zap className="h-4 w-4" /> AI Stack • ERP Modules • Business Automation
             </div>
-            <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">Build a smarter business with intelligent systems.</h1>
+            <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">AI systems that make business operations faster, clearer, and easier to scale.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/65 md:text-xl">
-              Æther AI helps businesses automate operations, deploy AI agents, build RAG platforms, and integrate modern AI into real enterprise workflows.
+              Æther AI builds practical automation, AI agents, RAG platforms, ERP extensions, and cloud integrations for teams that need measurable operational impact.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <a href="#contact" className="flex items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-semibold text-black transition hover:bg-white/85">
@@ -154,9 +180,9 @@ export default function AetherAIWebsite() {
             </div>
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-4">
               {[
-                ["10x", "Faster workflows"],
-                ["24/7", "AI operations"],
-                ["99%", "Process visibility"],
+                ["ERP", "Native workflows"],
+                ["AI", "Full-stack delivery"],
+                ["ROI", "Outcome focused"],
               ].map(([value, label]) => (
                 <div key={value} className="rounded-2xl border border-white/10 bg-white/[0.08] p-4">
                   <p className="text-2xl font-bold">{value}</p>
@@ -179,9 +205,9 @@ export default function AetherAIWebsite() {
 
               <div className="space-y-4">
                 {[
-                  ["Customer support agent", "1,284 tickets resolved", "92%"],
-                  ["Invoice processing", "486 documents synced", "88%"],
-                  ["ERP inventory sync", "12 stores connected", "96%"],
+                  ["Customer service agent", "1,284 tickets triaged", "92%"],
+                  ["Invoice & purchase workflow", "486 documents processed", "88%"],
+                  ["ERP, POS & inventory sync", "12 stores connected", "96%"],
                 ].map(([title, subtitle, value]) => (
                   <div key={title} className="rounded-2xl border border-white/10 bg-black/35 p-5">
                     <div className="flex justify-between gap-4">
@@ -248,6 +274,9 @@ export default function AetherAIWebsite() {
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-black/45">Solutions</p>
                 <h2 className="mt-4 text-4xl font-bold md:text-5xl">For teams that need speed, clarity, and scale.</h2>
+                <p className="mt-5 text-lg leading-relaxed text-black/60">
+                  We focus on workflows that touch revenue, service quality, stock accuracy, finance visibility, and management control.
+                </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 {industries.map((item) => (
@@ -261,6 +290,45 @@ export default function AetherAIWebsite() {
           </div>
         </section>
 
+        <section id="erp" className="mx-auto max-w-7xl px-6 py-24">
+          <div className="mb-12 grid items-end gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">ERP Modules</p>
+              <h2 className="mt-4 text-4xl font-bold md:text-5xl">AI connected to the modules your teams already run.</h2>
+            </div>
+            <p className="leading-relaxed text-white/55">
+              From Dynamics 365 Business Central and LS Central to custom ERP, POS, CRM, and finance systems, we connect AI to real business records with roles, approvals, and auditability.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {erpModules.map((module) => (
+              <div key={module.title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-6">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10">{module.icon}</div>
+                <h3 className="text-xl font-semibold">{module.title}</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {module.items.map((item) => (
+                    <span key={item} className="rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white/65">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 py-24">
+          <div className="grid gap-5 md:grid-cols-4">
+            {businessOutcomes.map(([value, title, desc]) => (
+              <div key={title} className="rounded-3xl border border-white/12 bg-white p-6 text-black">
+                <p className="text-3xl font-bold">{value}</p>
+                <h3 className="mt-4 text-xl font-semibold">{title}</h3>
+                <p className="mt-3 leading-relaxed text-black/60">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="process" className="mx-auto max-w-7xl px-6 py-24">
           <div className="mb-12 max-w-2xl">
             <p className="text-sm uppercase tracking-[0.3em] text-white/45">Process</p>
@@ -268,10 +336,10 @@ export default function AetherAIWebsite() {
           </div>
           <div className="grid gap-5 md:grid-cols-4">
             {[
-              ["01", "Discover", "Map goals, bottlenecks, systems, and business impact."],
-              ["02", "Design", "Create architecture, data flows, prompts, and security model."],
-              ["03", "Build", "Develop APIs, AI workflows, dashboards, and integrations."],
-              ["04", "Scale", "Deploy, monitor, optimize, and continuously improve."],
+              ["01", "Discover", "Map goals, bottlenecks, ERP modules, data ownership, and business impact."],
+              ["02", "Design", "Create workflows, architecture, prompts, permissions, and approval rules."],
+              ["03", "Build", "Develop agents, APIs, dashboards, RAG pipelines, and ERP integrations."],
+              ["04", "Scale", "Deploy, monitor, train users, optimize costs, and continuously improve."],
             ].map(([num, title, desc]) => (
               <div key={num} className="rounded-3xl border border-white/12 bg-white/[0.08] p-6">
                 <p className="text-sm text-white/35">{num}</p>
@@ -286,8 +354,22 @@ export default function AetherAIWebsite() {
           <div className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-white/45">Technology</p>
-              <h2 className="mt-4 text-4xl font-bold md:text-5xl">Modern stack. Enterprise mindset.</h2>
-              <p className="mt-5 leading-relaxed text-white/55">We use production-grade tools for AI, data, cloud, security, integrations, and scalable business systems.</p>
+              <h2 className="mt-4 text-4xl font-bold md:text-5xl">Complete AI stack. Enterprise mindset.</h2>
+              <p className="mt-5 leading-relaxed text-white/55">
+                We choose the right models, databases, orchestration tools, integrations, and deployment architecture for each workflow instead of forcing one vendor or one pattern.
+              </p>
+              <div className="mt-8 grid gap-3">
+                {[
+                  [<Cpu className="h-5 w-5" />, "Model selection, routing, evaluation, and cost control"],
+                  [<Network className="h-5 w-5" />, "API, webhook, ERP, POS, CRM, and data pipeline integration"],
+                  [<ShieldCheck className="h-5 w-5" />, "RBAC, secrets, audit logs, validation, and human approvals"],
+                ].map(([icon, text]) => (
+                  <div key={text} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-white/70">
+                    {icon}
+                    <span>{text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="grid gap-5 md:grid-cols-2">
               {techCategories.map((category) => (
@@ -310,8 +392,8 @@ export default function AetherAIWebsite() {
           <div className="grid gap-5 md:grid-cols-3">
             {[
               [<ShieldCheck className="h-7 w-7" />, "Secure by design", "Role-based access, auditability, validation, and protected data flows."],
-              [<Gauge className="h-7 w-7" />, "Built for ROI", "Every system is mapped to time saved, cost reduced, or revenue unlocked."],
-              [<Layers3 className="h-7 w-7" />, "Integration-first", "Connect AI with your ERP, CRM, databases, websites, and internal tools."],
+              [<Gauge className="h-7 w-7" />, "Built for ROI", "Every system is mapped to time saved, cost reduced, revenue unlocked, or risk avoided."],
+              [<Layers3 className="h-7 w-7" />, "Integration-first", "Connect AI with ERP, CRM, POS, databases, websites, spreadsheets, and internal tools."],
             ].map(([icon, title, desc]) => (
               <div key={title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-7">
                 <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10">{icon}</div>
@@ -330,9 +412,9 @@ export default function AetherAIWebsite() {
             </div>
             <div className="space-y-5">
               {[
-                [<Globe2 className="h-5 w-5" />, "Multi-system automation across web, ERP, and customer operations."],
-                [<Lock className="h-5 w-5" />, "Secure AI assistant for internal knowledge and support teams."],
-                [<Rocket className="h-5 w-5" />, "Faster delivery with scalable architecture and clean deployment."],
+                [<Globe2 className="h-5 w-5" />, "Multi-system automation across web, ERP, POS, CRM, and customer operations."],
+                [<Lock className="h-5 w-5" />, "Secure AI assistant for internal knowledge, SOPs, policies, and support teams."],
+                [<Rocket className="h-5 w-5" />, "Faster delivery with scalable architecture, measurable KPIs, and clean deployment."],
               ].map(([icon, text]) => (
                 <div key={text} className="flex gap-3 rounded-2xl border border-white/10 bg-black/30 p-5 text-white/75">
                   {icon}
@@ -354,7 +436,7 @@ export default function AetherAIWebsite() {
                   <MessageSquareText className="h-5 w-5" /> Strategy, architecture, and implementation
                 </p>
                 <p className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5" /> Automation, AI agents, RAG, ERP integrations
+                  <CheckCircle2 className="h-5 w-5" /> AI stack, agents, RAG, ERP modules, integrations
                 </p>
               </div>
             </div>
@@ -367,6 +449,9 @@ export default function AetherAIWebsite() {
                 <option>AI Automation</option>
                 <option>AI Agent</option>
                 <option>RAG Knowledge Assistant</option>
+                <option>ERP Module Automation</option>
+                <option>Business Central / LS Central Integration</option>
+                <option>POS, Inventory, Finance, or Retail Workflow</option>
                 <option>Enterprise Integration</option>
               </select>
               <textarea className="min-h-32 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none" placeholder="Tell us about your project" aria-label="Project details" />
