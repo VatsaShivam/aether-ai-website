@@ -83,34 +83,34 @@ export default function AetherAIWebsite() {
     { icon: <UsersRound className="h-5 w-5" />, title: "HR & Admin", items: ["Onboarding", "Policies", "Requests", "Helpdesk"] },
     { icon: <FileText className="h-5 w-5" />, title: "Documents", items: ["OCR", "Contracts", "KYC", "Compliance"] },
   ];
-  const techCategories = [
+  const clientStack = [
     {
-      title: "LLMs & Model Providers",
-      items: ["OpenAI", "Azure OpenAI", "Gemini", "Claude", "Mistral", "Llama", "Hugging Face", "Ollama", "Groq", "Together AI", "Model routing", "Fine-tuning"],
+      title: "Customer Experience",
+      items: ["Website chat", "WhatsApp support", "Email triage", "Ticket routing", "Customer history", "Escalation handoff"],
     },
     {
-      title: "Agents & RAG",
-      items: ["LangChain", "LlamaIndex", "CrewAI", "AutoGen", "RAG pipelines", "Tool calling", "Memory", "Guardrails", "Evaluation", "Embeddings", "Citations", "Human approval"],
+      title: "Business Automation",
+      items: ["Approvals", "Reminders", "Follow-ups", "Document reading", "Data entry", "Exception alerts"],
     },
     {
-      title: "Vector & Data",
-      items: ["Qdrant", "Milvus", "Pinecone", "Weaviate", "Chroma", "PostgreSQL", "MongoDB", "Redis", "SQL Server", "Data lakes", "ETL pipelines", "Analytics"],
+      title: "Knowledge & Decisions",
+      items: ["Policy answers", "SOP guidance", "Product lookup", "Report summaries", "Cited responses", "Manager insights"],
     },
     {
-      title: "ERP & Retail Systems",
-      items: ["Dynamics 365 Business Central", "LS Central", "LS Retail", "Microsoft NAV", "AL", "C/AL", "OData", "SOAP", "POS", "Replenishment", "Finance", "Inventory"],
+      title: "ERP Operations",
+      items: ["Sales orders", "Purchase orders", "Inventory sync", "Invoice matching", "Store operations", "Finance visibility"],
     },
     {
-      title: "Integrations",
-      items: ["Shopify", "WooCommerce", "GraphQL", "REST APIs", "Webhooks", "Microsoft Graph", "Power Automate", "Power Apps", "Bloomreach", "Payment APIs", "CRM integrations", "WhatsApp"],
+      title: "Connected Systems",
+      items: ["ERP", "CRM", "POS", "E-commerce", "Payments", "Spreadsheets", "Databases", "Internal portals"],
     },
     {
-      title: "Engineering & Cloud",
-      items: ["React", "TypeScript", "Tailwind CSS", "FastAPI", "Node.js", "Python", "Docker", "Kubernetes", "Azure", "AWS", "Cloudflare", "Nginx"],
+      title: "Control & Governance",
+      items: ["User roles", "Approvals", "Audit logs", "Data permissions", "Quality checks", "Human review"],
     },
     {
-      title: "DevOps & Security",
-      items: ["Git", "Azure DevOps", "GitHub Actions", "CI/CD", "OAuth2", "JWT", "RBAC", "Secrets vault", "Monitoring", "Logging", "Rate limiting", "Audit trails"],
+      title: "Growth & Reporting",
+      items: ["KPI dashboards", "Sales signals", "Stock alerts", "Service trends", "Cost tracking", "ROI reports"],
     },
   ];
   const active = services.find((item) => item.title === activeService) || services[0];
@@ -133,9 +133,16 @@ export default function AetherAIWebsite() {
           </a>
 
           <div className="hidden items-center gap-8 text-sm text-white/70 lg:flex">
-            {["Services", "ERP", "Solutions", "Process", "Tech", "Contact"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="transition hover:text-white">
-                {item}
+            {[
+              ["Services", "services"],
+              ["ERP", "erp"],
+              ["Solutions", "solutions"],
+              ["Process", "process"],
+              ["Capabilities", "tech"],
+              ["Contact", "contact"],
+            ].map(([label, href]) => (
+              <a key={label} href={`#${href}`} className="transition hover:text-white">
+                {label}
               </a>
             ))}
           </div>
@@ -151,9 +158,16 @@ export default function AetherAIWebsite() {
 
         {mobileOpen && (
           <div className="border-t border-white/10 bg-black/80 px-6 pb-5 lg:hidden">
-            {["Services", "ERP", "Solutions", "Process", "Tech", "Contact"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="block py-3 text-white/75" onClick={() => setMobileOpen(false)}>
-                {item}
+            {[
+              ["Services", "services"],
+              ["ERP", "erp"],
+              ["Solutions", "solutions"],
+              ["Process", "process"],
+              ["Capabilities", "tech"],
+              ["Contact", "contact"],
+            ].map(([label, href]) => (
+              <a key={label} href={`#${href}`} className="block py-3 text-white/75" onClick={() => setMobileOpen(false)}>
+                {label}
               </a>
             ))}
           </div>
@@ -353,16 +367,16 @@ export default function AetherAIWebsite() {
         <section id="tech" className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-white/45">Technology</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-white/45">Capabilities</p>
               <h2 className="mt-4 text-4xl font-bold md:text-5xl">Complete AI stack. Enterprise mindset.</h2>
               <p className="mt-5 leading-relaxed text-white/55">
-                We choose the right models, databases, orchestration tools, integrations, and deployment architecture for each workflow instead of forcing one vendor or one pattern.
+                We cover every layer a business needs: customer conversations, daily operations, ERP data, knowledge support, approvals, reporting, and secure rollout.
               </p>
               <div className="mt-8 grid gap-3">
                 {[
-                  [<Cpu className="h-5 w-5" />, "Model selection, routing, evaluation, and cost control"],
-                  [<Network className="h-5 w-5" />, "API, webhook, ERP, POS, CRM, and data pipeline integration"],
-                  [<ShieldCheck className="h-5 w-5" />, "RBAC, secrets, audit logs, validation, and human approvals"],
+                  [<Cpu className="h-5 w-5" />, "Smarter assistants that answer, summarize, recommend, and take action"],
+                  [<Network className="h-5 w-5" />, "Connected workflows across ERP, CRM, POS, e-commerce, finance, and support"],
+                  [<ShieldCheck className="h-5 w-5" />, "Business control with permissions, approvals, audit history, and quality checks"],
                 ].map(([icon, text]) => (
                   <div key={text} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-white/70">
                     {icon}
@@ -372,7 +386,7 @@ export default function AetherAIWebsite() {
               </div>
             </div>
             <div className="grid gap-5 md:grid-cols-2">
-              {techCategories.map((category) => (
+              {clientStack.map((category) => (
                 <div key={category.title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-6">
                   <h3 className="mb-4 text-xl font-semibold">{category.title}</h3>
                   <div className="flex flex-wrap gap-2">
