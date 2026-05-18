@@ -1,5 +1,7 @@
 import { blogPosts } from "../../_shared/blogs.js";
-import { json, proxyToBackend } from "../../_shared/http.js";
+import { json, options, proxyToBackend } from "../../_shared/http.js";
+
+export const onRequestOptions = () => options();
 
 export const onRequestGet = async ({ request, env, params }) => {
   const proxied = await proxyToBackend({ request, env, path: `/api/blogs/${params.slug}` });

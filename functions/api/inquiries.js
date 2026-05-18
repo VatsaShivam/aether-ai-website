@@ -1,6 +1,21 @@
-import { json, proxyToBackend } from "../_shared/http.js";
+import { json, options, proxyToBackend } from "../_shared/http.js";
 
-export const onRequestPost = async ({ request, env }) => {
+export const onRequest = async ({ request, env }) => {
+  if (request.method === "OPTIONS") {
+    return options();
+  }
+
+  if (request.method === "GET") {
+    return json({
+      status: "ok",
+      message: "Use POST /api/inquiries to submit website inquiries.",
+    });
+  }
+
+  if (request.method !== "POST") {
+    return json({ detail: "Method not allowed" }, 405);
+  }
+
   const body = await request.json().catch(() => null);
   if (!body?.name || !body?.email || !body?.projectType || !body?.message) {
     return json({ detail: "Missing required inquiry fields" }, 400);
