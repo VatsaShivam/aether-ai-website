@@ -117,7 +117,11 @@ export default function AetherAIWebsite() {
     },
     {
       title: "Connected Systems",
-      items: ["ERP", "CRM", "POS", "E-commerce", "Payments", "Spreadsheets", "Databases", "Internal portals"],
+      items: ["ERP", "CRM", "POS", "E-commerce", "Payments", "Spreadsheets", "MongoDB", "Internal portals"],
+    },
+    {
+      title: "Content & Information",
+      items: ["Blog content", "Knowledge base", "Python APIs", "MongoDB storage", "Article rendering", "Search-ready records"],
     },
     {
       title: "Control & Governance",
@@ -196,6 +200,11 @@ export default function AetherAIWebsite() {
   const active = services.find((item) => item.title === activeService) || services[0];
   const isHome = path === "/";
   const activePost = blogPosts.find((post) => path === `/blog/${post.slug}`);
+  const contentArchitecture = [
+    ["Python content API", "Serve articles, categories, author data, SEO metadata, and business insights through clean endpoints."],
+    ["MongoDB article store", "Keep blog posts, case studies, FAQs, service pages, and knowledge records flexible as content grows."],
+    ["Dynamic blog rendering", "Render articles from structured content so new posts can be published without changing the frontend."],
+  ];
   const navItems = [
     ["Home", "/"],
     ["Services", "/services"],
@@ -469,7 +478,7 @@ export default function AetherAIWebsite() {
               <div className="mt-8 grid gap-3">
                 {[
                   [<Cpu className="h-5 w-5" />, "Smarter assistants that answer, summarize, recommend, and take action"],
-                  [<Network className="h-5 w-5" />, "Connected workflows across ERP, CRM, POS, e-commerce, finance, and support"],
+                  [<Network className="h-5 w-5" />, "Connected workflows across ERP, CRM, POS, e-commerce, MongoDB, finance, and support"],
                   [<ShieldCheck className="h-5 w-5" />, "Business control with permissions, approvals, audit history, and quality checks"],
                 ].map(([icon, text]) => (
                   <div key={text} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-white/70">
@@ -567,12 +576,23 @@ export default function AetherAIWebsite() {
                 <div>
                   <p className="text-sm uppercase tracking-[0.3em] text-black/45">Publish With Us</p>
                   <h2 className="mt-4 text-3xl font-bold md:text-4xl">Need a blog section for case studies, insights, and updates?</h2>
-                  <p className="mt-4 text-black/60">The blog page is ready for posts, categories, and future article detail pages.</p>
+                  <p className="mt-4 text-black/60">The blog page is ready for posts, categories, article detail pages, and future Python + MongoDB content rendering.</p>
                 </div>
                 <button type="button" onClick={() => navigate("/contact")} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-black px-7 py-4 font-semibold text-white">
                   Plan Content <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
+            </div>
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {contentArchitecture.map(([title, desc]) => (
+                <div key={title} className="rounded-3xl border border-white/12 bg-white/[0.08] p-6">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10">
+                    <Database className="h-6 w-6" />
+                  </div>
+                  <h2 className="text-xl font-semibold">{title}</h2>
+                  <p className="mt-3 leading-relaxed text-white/55">{desc}</p>
+                </div>
+              ))}
             </div>
           </section>
         )}
@@ -640,6 +660,8 @@ export default function AetherAIWebsite() {
                 <option>AI Agent</option>
                 <option>RAG Knowledge Assistant</option>
                 <option>ERP Module Automation</option>
+                <option>Python API with MongoDB</option>
+                <option>Dynamic Blog / Content System</option>
                 <option>Business Central / LS Central Integration</option>
                 <option>POS, Inventory, Finance, or Retail Workflow</option>
                 <option>Enterprise Integration</option>
